@@ -22,7 +22,7 @@ from tobrot import (
 async def new_join_f(client, message):
     chat_type = message.chat.type
     if chat_type != "private":
-        await message.reply_text(f"Current CHAT ID: <code>{message.chat.id}</code>")
+        await message.reply_text(f"Current CHAT ID is: <code>{message.chat.id}</code>")
         # leave chat
         await client.leave_chat(
             chat_id=message.chat.id,
@@ -38,7 +38,7 @@ async def help_message_f(client, message):
     message_id = 99
     # display the /help message
     await message.reply_text(
-        f"please read the <a href='https://t.me/c/{channel_id}/{message_id}'>Pinned Message</a>",
+        f"👉Off topic means Off Topic, Not Porn, Not Hate, Not Spam so be careful.\n👉Do /leech <magnet link> to download your torrent file and upload here fastest.\nDo /cancel to cancel your downloading.\nOther features will be introduced later. ",
         quote=True
     )
 

@@ -79,14 +79,14 @@ def add_magnet(aria_instance, magnetic_link, c_file_name):
             options=options
         )
     except Exception as e:
-        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
+        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links."
     else:
         return True, "" + download.gid + ""
 
 
 def add_torrent(aria_instance, torrent_file_path):
     if torrent_file_path is None:
-        return False, "**FAILED** \n" + str(e) + " \nsomething wrongings when trying to add <u>TORRENT</u> file"
+        return False, "**FAILED** \n" + str(e) + " \nsomething went wrong  when trying to add <u>TORRENT</u> file"
     if os.path.exists(torrent_file_path):
         # Add Torrent Into Queue
         try:
@@ -97,7 +97,7 @@ def add_torrent(aria_instance, torrent_file_path):
                 position=None
             )
         except Exception as e:
-            return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
+            return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links."
         else:
             return True, "" + download.gid + ""
     else:
@@ -118,7 +118,7 @@ def add_url(aria_instance, text_url, c_file_name):
             options=options
         )
     except Exception as e:
-        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
+        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links."
     else:
         return True, "" + download.gid + ""
 
@@ -195,9 +195,9 @@ async def call_apropriate_function(
         message_to_send += "</a>"
         message_to_send += "\n"
     if message_to_send != "":
-        mention_req_user = f"<a href='tg://user?id={user_id}'>Your Requested Files</a>\n\n"
+        mention_req_user = f"<a href='tg://user?id={user_id}'>Your Requested File(s) below</a>\n\n"
         message_to_send = mention_req_user + message_to_send
-        message_to_send = message_to_send + "\n\n" + "#uploads"
+        message_to_send = message_to_send + "\n\n" + "NiceToMeetU"
     else:
         message_to_send = "<i>FAILED</i> to upload files. 😞😞"
     await sent_message_to_update_tg_p.reply_to_message.reply_text(
@@ -220,7 +220,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                 # sometimes, this weird https://t.me/c/1220993104/392975
                 # error creeps up
                 # TODO: temporary workaround
-                downloading_dir_name = "N/A"
+                downloading_dir_name = "WAIT"
                 try:
                     # another derp -_-
                     # https://t.me/c/1220993104/423318
@@ -240,7 +240,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
 
                 # msg += f"\nStatus: {file.status}"
                 msg += f"\nETA: {file.eta_string()}"
-                msg += f"\n<code>/cancel {gid}</code>"
+                msg += f"\n<code>/cancel {gid}</code> to cancel the progress"
                 # LOGGER.info(msg)
                 if msg != previous_message:
                     await event.edit(msg)
@@ -252,7 +252,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
             await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
             await check_progress_for_dl(aria2, gid, event, previous_message)
         else:
-            await event.edit(f"File Downloaded Successfully: `{file.name}`")
+            await event.edit(f"`{file.name}` is downloaded")
             return True
     except Exception as e:
         LOGGER.info(str(e))
@@ -261,7 +261,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
             return False
         elif " depth exceeded" in str(e):
             file.remove(force=True)
-            await event.edit("Download Auto Canceled :\n`{}`\nYour Torrent/Link is Dead.".format(file.name))
+            await event.edit("Download Auto Canceled :\n`{}`\nYour Torrent/Link is Dead. Download torrent file for your brain first".format(file.name))
             return False
         else:
             LOGGER.info(str(e))
